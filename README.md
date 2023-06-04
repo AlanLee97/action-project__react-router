@@ -1,70 +1,103 @@
-# Getting Started with Create React App
+# 实现React-Router简单版
+## 目标
+1. 两个组件
+   - Router
+   - Route
+     - props: 
+       - path 路径
+       - element react元素
+       - component react组件（element和component二选一）
+2. 三个hooks
+   - useHistory
+   - useLocation
+   - useNavigate
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## 使用示例
+```js
+import {
+  Router,
+  Route,
+  useHistory,
+  useLocation,
+  useNavigate
+} from './router'
 
-In the project directory, you can run:
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Route path="/a" element={<CpnA />} />
+        <Route path="/b" element={<CpnB />} />
+        <Route path="/c" component={CpnC} />
+        <Route path="/d" component={CpnD} />
+        <Route path="/" component={Home} />
+      </Router>
+    </div>
+  );
+}
 
-### `npm start`
+function Home(props = {}) {
+  const history = useHistory();
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log('test hooks', {
+    history,
+    location
+  });
+  const toPage = (path) => {
+    // props.history.push(path);
+    // history.push(path);
+    navigate(path);
+  }
+  return (
+    <section>
+      <div className='cpn--home-btn-wrapper'>
+        <button onClick={() => toPage('/a')}>to /a</button>
+        <button onClick={() => toPage('/b')}>to /b</button>
+        <button onClick={() => toPage('/c')}>to /c</button>
+        <button onClick={() => toPage('/d')}>to /d</button>
+      </div>
+    </section>
+  )
+}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+function CpnA(props = {}) {
+  return (
+    <section>
+      <h2>Cpn A</h2>
+      <button onClick={() => {props.history.push('/b')}}>to B</button>
+    </section>
+  )
+}
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+function CpnB(props = {}) {
+  console.log('CpnB props', props);
+  return (
+    <section>
+      <h2>Cpn B</h2>
+      <button onClick={() => {props.history.push('/a')}}>to A</button>
+    </section>
+  )
+}
 
-### `npm test`
+function CpnC(props = {}) {
+  console.log('CpnC props', props);
+  return (
+    <section>
+      <h2>Cpn C</h2>
+      <button onClick={() => {props.history.push('/d')}}>to D</button>
+    </section>
+  )
+}
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+function CpnD(props = {}) {
+  console.log('CpnD props', props);
+  return (
+    <section>
+      <h2>Cpn D</h2>
+      <button onClick={() => {props.history.push('/c')}}>to C</button>
+    </section>
+  )
+}
+```
